@@ -1,0 +1,36 @@
+{
+    "manifest_version": 2,
+    "name": "Extension Example",
+    "description": "Basic extension.",
+    "version": "0.1",
+    "author": "Jasmin Bektic",       
+    "browser_action": {
+        "default_icon": {                   
+            "16": "tab-icon.png",          
+            "24": "tab-icon.png",          
+            "32": "tab-icon.png"            
+        },
+        "default_title": "Hello man!",
+        "default_popup": "src/html/popup.html"
+    },
+    "background": {
+        "scripts": [
+            "src/js/background.js"
+        ],
+        "persistent": false
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://www.imdb.com/title/tt*"],
+            "css": ["src/css/imdb.css"],
+            "js": [
+                "src/js/imdb.js", 
+                "src/js/storage.js"
+            ]
+        }
+    ],
+    "chrome_url_overrides" : {
+        
+    },
+    "permissions": ["activeTab", "declarativeContent", "storage"]
+}
