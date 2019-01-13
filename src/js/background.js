@@ -7,6 +7,14 @@ document.querySelectorAll('[data-tab]').forEach((e) => {
     e.addEventListener('click', renderView);
 });
 
+/**
+ * TODO:
+ * - Current version provides data from init requests (number of requests are the number of 
+ *   added shows) in which case at some point we hit request limit by api provider.
+ * - Flow should go this way: (api GET)->(sync google storage)->(render), api will be called
+ *   from injected button where 2 requests should be triggered (api/find and api/tv)
+ * - Refactor promise waterfall
+ */
 
 function init(view) {
     config = fetch("/config.json")
