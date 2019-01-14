@@ -8,14 +8,14 @@ button.addEventListener('click', async function () {
         imdb_id = url.split('/')[2];
 
         var imdb_ids = await getFromStorage(STORAGE_IMDB);
-
+        console.log(Storage);
         if (imdb_ids.includes(imdb_id)) {
             alert('You already added this TV show.');
             return;
         }
 
         imdb_ids.push(imdb_id);
-        insertIntoStorage(STORAGE_IMDB, imdb_ids);
+        Storage.insert(STORAGE_IMDB, imdb_ids);
 
         alert('TV show successfully added.');
 });

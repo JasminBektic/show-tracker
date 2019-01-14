@@ -14,6 +14,7 @@ document.querySelectorAll('[data-tab]').forEach((e) => {
  * - Flow should go this way: (api GET)->(sync google storage)->(render), api will be called
  *   from injected button where 2 requests should be triggered (api/find and api/tv)
  * - Refactor promise waterfall
+ * - Tv shows will be limited to 40 imports
  */
 
 function init(view) {
@@ -26,8 +27,8 @@ function init(view) {
 
                 // insertIntoStorage(STORAGE_IMDB, config.imdb_ids) // tv shows seeders
 
-                imdb_ids = await getFromStorage(STORAGE_IMDB);
-                
+                imdb_ids = await Storage.get(STORAGE_IMDB);
+               
                 // return config; 
             })
 
@@ -38,6 +39,7 @@ function init(view) {
                 imdb_ids.forEach(imdbId => {
                     services.push(fetch(config.api_host+ "find/" +imdbId+ "?api_key=" +config.api_key+ "&external_source=imdb_id")
                                     .then(function(response) {
+                                        // console.log(response.json());
                                         return response.json();
                                     })
                                 );
@@ -49,9 +51,10 @@ function init(view) {
                 var services = [];
 
                 response.forEach(res => {
-                    res.tv_results.forEach(show => {
+                    res.movie_results.forEach(show => {
                         services.push(fetch(config.api_host+ "tv/" +show.id+ "?api_key=" +config.api_key)
                                         .then(function(response) {
+                                            console.log(response.json());
                                             return response.json();
                                         })
                                     );
