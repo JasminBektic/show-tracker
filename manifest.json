@@ -10,27 +10,30 @@
             "24": "tab-icon.png",          
             "32": "tab-icon.png"            
         },
-        "default_title": "Hello man!",
+        "default_title": "Show Tracker",
         "default_popup": "src/html/popup.html"
     },
     "background": {
         "scripts": [
-            "src/js/background.js"
+            "src/js/sync.todo.js"
         ],
         "persistent": false
     },
     "content_scripts": [
         {
             "matches": ["https://www.imdb.com/title/tt*"],
+            "run_at": "document_idle",
             "css": ["src/css/imdb.css"],
             "js": [
                 "src/js/imdb.js", 
-                "src/js/storage.js"
+                "src/js/modules/storage.js"
             ]
         }
     ],
-    "chrome_url_overrides" : {
-        
-    },
-    "permissions": ["activeTab", "declarativeContent", "storage"]
+    "chrome_url_overrides" : {},
+    "permissions": [
+        "activeTab", 
+        "declarativeContent", 
+        "storage"
+    ]
 }

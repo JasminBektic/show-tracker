@@ -1,29 +1,51 @@
+var add_button = createAddButton();
+var button_wrapper = createAddButtonWrapper();
+button_wrapper.appendChild(add_button);
 
+document.getElementById('wrapper').appendChild(button_wrapper);
 
-var node = document.createElement('div'),
-    button = document.createElement('button');
+function createAddButtonWrapper() {
+    var wrapper = document.createElement('div');
+    wrapper.setAttribute('class', 'imdb-container'); 
+    wrapper.style.background = 'green';
 
-button.addEventListener('click', async function () {
-    var url = window.location.pathname,
-        imdb_id = url.split('/')[2];
+    return wrapper;
+}
 
-        var imdb_ids = await getFromStorage(STORAGE_IMDB);
-        console.log(Storage);
-        if (imdb_ids.includes(imdb_id)) {
-            alert('You already added this TV show.');
-            return;
-        }
+function createAddButton() {
+    var button = document.createElement('button');
+    button.innerHTML = `Add`;
+    button.setAttribute('class', 'test-class'); 
+    button.style.color = 'red';
+    button.addEventListener('click', bindAddClickEvent);
 
-        imdb_ids.push(imdb_id);
-        Storage.insert(STORAGE_IMDB, imdb_ids);
+    return button;
+}
 
-        alert('TV show successfully added.');
-});
+function bindAddClickEvent() {
+    var imdb_id = window.location.pathname.split('/')[2];
 
-button.append('Add');
+    show = response.tv_shows[0]  // Get this object trough api
 
-node.classList.add('imdb-container');  
-node.append(button);
+    var storage = Storage.get();
 
-document.getElementById('wrapper').appendChild(node);
+    if (isShowAdded(storage.shows, show)) {
+        message('You already added this TV show.');
+        return;
+    }
 
+    storage.shows.push(show);
+    Storage.insert(show, 'shows');
+
+    message('TV show successfully added.');
+}
+
+function isShowAdded(shows, show) {
+    shows.find((s) => {
+        return s.imdb_id == show.imdb_id;
+    });
+}
+
+function message(text) {
+    alert(text);
+}

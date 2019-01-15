@@ -46,8 +46,8 @@ var Storage = (function() {
         });
     }
 
-    async function destroy(imdb_id) {
-        var data = await get();
+    function destroy(imdb_id) {
+        var data = get();
         imdb_ids = imdb_ids.filter((id) => id !== imdb_id);
     
         chrome.storage.sync.set({[STORAGE_KEY]: imdb_ids}, () => {

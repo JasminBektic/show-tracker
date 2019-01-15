@@ -27,7 +27,7 @@ function init(view) {
 
                 // insertIntoStorage(STORAGE_IMDB, config.imdb_ids) // tv shows seeders
 
-                imdb_ids = await Storage.get(STORAGE_IMDB);
+                imdb_ids = await Storage.get();
                
                 // return config; 
             })
