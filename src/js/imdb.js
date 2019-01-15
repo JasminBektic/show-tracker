@@ -25,19 +25,28 @@ function createAddButton() {
 function bindAddClickEvent() {
     var imdb_id = window.location.pathname.split('/')[2];
 
-    show = response.tv_shows[0]  // Get this object trough api
+    Api.getByImdb(imdb_id)
+        .then((response) => {
+            response = Api.imdbResponsePurifier(response);
+            Storage.setKey(response.key_type);
 
-    var storage = Storage.get();
+            return Api.getById(response.data.id);
+        }).then((show) => {
+            // show = Api.imdbResponsePurifier(res);  TODO: implement
+            
+            // var storage = Storage.get();
+        
+            // if (isShowAdded(storage.shows, show)) {
+            //     message('You already added this TV show.');
+            //     return;
+            // }
+        
+            Storage.insert(show);
+            
+        
+            message('TV show successfully added.');
+        });
 
-    if (isShowAdded(storage.shows, show)) {
-        message('You already added this TV show.');
-        return;
-    }
-
-    storage.shows.push(show);
-    Storage.insert(show, 'shows');
-
-    message('TV show successfully added.');
 }
 
 function isShowAdded(shows, show) {

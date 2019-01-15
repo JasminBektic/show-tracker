@@ -1,7 +1,9 @@
 {
-    "api_host": "https://api.themoviedb.org/3/",
-    "api_key": "f2e03364520223af458cf73b7da1e8c7",
-    "api_base_url": "https://image.tmdb.org/t/p/",
+    "api": {
+        "host": "https://api.themoviedb.org/3/",
+        "key": "f2e03364520223af458cf73b7da1e8c7",
+        "base_url": "https://image.tmdb.org/t/p/"
+    },
     "imdb_ids": [
         "tt0944947",
         "tt2306299",

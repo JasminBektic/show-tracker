@@ -10,44 +10,27 @@ var Storage = (function() {
     'use strict';
 
     var STORAGE_KEY = 'show_tracker';
+    var key = '';
   
     /* =================== private methods ================= */
 
   
     /* =================== public methods ================== */
-    function init() {
-    
+    function setKey(k) {
+        key = k
     }
 
-    // function insertTvShow(show) {
-    //     var data = get();
-    //     data.shows.push(show);
-
-    //     chrome.storage.sync.set({[STORAGE_KEY]: data}, () => {
-    //         return true;
-    //     });
-    // }
-
-    // function insertMovie(movie) {
-    //     var data = get();
-    //     data.movies.push(movie);
-
-    //     chrome.storage.sync.set({[STORAGE_KEY]: data}, () => {
-    //         return true;
-    //     });
-    // }
-
-    function insert(showOrMovie, key) {
-        var data = get();
-        data[key].push(showOrMovie);
+    async function insert(show) {
+        var data = await get();
+        data[key].push(show);
 
         chrome.storage.sync.set({[STORAGE_KEY]: data}, () => {
             return true;
         });
     }
 
-    function destroy(imdb_id) {
-        var data = get();
+    async function destroy(imdb_id) {
+        var data = await get();
         imdb_ids = imdb_ids.filter((id) => id !== imdb_id);
     
         chrome.storage.sync.set({[STORAGE_KEY]: imdb_ids}, () => {
@@ -66,13 +49,25 @@ var Storage = (function() {
             });
         });
     }
+
+    function getConfig() {
+        // TODO: sync in storage from config.json
+        // hardcoded for now
+        return {
+            "api": {
+                "host": "https://api.themoviedb.org/3/",
+                "key": "f2e03364520223af458cf73b7da1e8c7",
+                "base_url": "https://image.tmdb.org/t/p/"
+            },
+        }
+    }
   
     /* =============== export public methods =============== */
     return {
       insert: insert,
-    //   insertMovie: insertMovie,
-    //   insertTvShow: insertTvShow,
       destroy: destroy,
-      get: get
+      get: get,
+      getConfig: getConfig,
+      setKey: setKey
     };
 }());
