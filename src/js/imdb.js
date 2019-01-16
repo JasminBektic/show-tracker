@@ -24,6 +24,11 @@ function createAddButton() {
 
 function bindAddClickEvent() {
     var imdb_id = window.location.pathname.split('/')[2];
+  
+    if (isShowAdded(imdb_id)) {
+        message('You already added this TV show.');
+        return;
+    }
 
     Api.getByImdb(imdb_id)
         .then((response) => {
@@ -31,27 +36,33 @@ function bindAddClickEvent() {
             Storage.setKey(response.key_type);
 
             return Api.getById(response.data.id);
-        }).then((show) => {
-            // show = Api.imdbResponsePurifier(res);  TODO: implement
+        })
+        .then((show) => {
+            Storage.insert({
+                id: show.id,
+                overview: show.overview,
+                name: show.name,
+                backdrop_path: show.backdrop_path,
+                homepage: show.homepage,
+                last_air_date: show.last_air_date,
+                poster_path: show.poster_path,
+                status: show.status,
+                type: show.type,
+                vote_average: show.vote_average
+            });
             
-            // var storage = Storage.get();
-        
-            // if (isShowAdded(storage.shows, show)) {
-            //     message('You already added this TV show.');
-            //     return;
-            // }
-        
-            Storage.insert(show);
-            
-        
             message('TV show successfully added.');
+        })
+        .catch(() => {
+            message('An error occurred, try again.');
         });
-
 }
 
-function isShowAdded(shows, show) {
-    shows.find((s) => {
-        return s.imdb_id == show.imdb_id;
+async function isShowAdded(imdb_id) {
+    var storage = await Storage.get();
+
+    storage.shows.find((show) => {
+        return show.imdb_id == imdb_id;
     });
 }
 

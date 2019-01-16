@@ -17,6 +17,11 @@ document.querySelectorAll('[data-tab]').forEach((e) => {
  * - Tv shows will be limited to 40 imports
  */
 
+//  chrome.storage.local.clear(function() {});
+
+var storage = Storage.get();
+console.log(storage);
+
 function init(view) {
     config = fetch("/config.json")
             .then(response => { 
@@ -64,7 +69,6 @@ function init(view) {
                 return Promise.all(services);
             })
             .then(response => {
-console.log(response);
 
                 // TODO: render under one loop iteration and sort array by date
                 render.today_shows = renderTodayShows(response);

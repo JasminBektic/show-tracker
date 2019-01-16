@@ -13,6 +13,17 @@ var Storage = (function() {
     var key = '';
   
     /* =================== private methods ================= */
+    function initStructure() {
+        return {
+            shows: [],
+            movies: [],
+            synced: false
+        }
+    }
+
+    function getKey() {
+        return key;
+    }
 
   
     /* =================== public methods ================== */
@@ -22,9 +33,9 @@ var Storage = (function() {
 
     async function insert(show) {
         var data = await get();
-        data[key].push(show);
+        data[getKey()].push(show);
 
-        chrome.storage.sync.set({[STORAGE_KEY]: data}, () => {
+        chrome.storage.local.set({[STORAGE_KEY]: data}, () => {
             return true;
         });
     }
@@ -33,16 +44,16 @@ var Storage = (function() {
         var data = await get();
         imdb_ids = imdb_ids.filter((id) => id !== imdb_id);
     
-        chrome.storage.sync.set({[STORAGE_KEY]: imdb_ids}, () => {
+        chrome.storage.local.set({[STORAGE_KEY]: imdb_ids}, () => {
             return true;
         });
     }
 
     function get() {
         return new Promise(resolve => {
-            chrome.storage.sync.get(STORAGE_KEY, (res) => {
+            chrome.storage.local.get(STORAGE_KEY, (res) => {
                 if(res[STORAGE_KEY] === undefined) {
-                    resolve([]);
+                    resolve(initStructure());
                 }
         
                 resolve(res[STORAGE_KEY]);
