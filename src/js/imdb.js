@@ -25,10 +25,10 @@ function createAddButton() {
 function bindAddClickEvent() {
     var imdb_id = window.location.pathname.split('/')[2];
   
-    if (isShowAdded(imdb_id)) {
-        message('You already added this TV show.');
-        return;
-    }
+    // if (isShowAdded(imdb_id)) {
+    //     message('You already added this TV show.');
+    //     return;
+    // }
 
     Api.getByImdb(imdb_id)
         .then((response) => {
@@ -38,16 +38,17 @@ function bindAddClickEvent() {
             return Api.getById(response.data.id);
         })
         .then((show) => {
+            console.log(show);
+            
             Storage.insert({
                 id: show.id,
-                overview: show.overview,
                 name: show.name,
                 backdrop_path: show.backdrop_path,
-                homepage: show.homepage,
-                last_air_date: show.last_air_date,
+                genres: show.genres,
+                episode_run_time: show.episode_run_time,
                 poster_path: show.poster_path,
-                status: show.status,
-                type: show.type,
+                next_episode_to_air: show.next_episode_to_air,
+                last_episode_to_air: show.last_episode_to_air,
                 vote_average: show.vote_average
             });
             

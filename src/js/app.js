@@ -19,75 +19,27 @@ document.querySelectorAll('[data-tab]').forEach((e) => {
 
 //  chrome.storage.local.clear(function() {});
 
-var storage = Storage.get();
-console.log(storage);
+// var storage = Storage.get();
+// console.log(storage);
 
-function init(view) {
-    config = fetch("/config.json")
-            .then(response => { 
-                return response.json(); 
-            })
-            .then(async function(data) {
-                config = data; 
+async function init(view) {
+    let storage = await Storage.get();
+        config = Storage.getConfig();
 
-                // insertIntoStorage(STORAGE_IMDB, config.imdb_ids) // tv shows seeders
+    // TODO: render under one loop iteration and sort array by date
+    render.today_shows = renderTodayShows(storage.shows);
+    render.next_seven_days = renderNextSevenDaysShows(storage.shows);
+    render.air_dates = renderAirDate(storage.shows);
 
-                imdb_ids = await Storage.get();
-               
-                // return config; 
-            })
-
-    Promise.all([config])
-            .then(() => {
-                var services = [];
-
-                imdb_ids.forEach(imdbId => {
-                    services.push(fetch(config.api_host+ "find/" +imdbId+ "?api_key=" +config.api_key+ "&external_source=imdb_id")
-                                    .then(function(response) {
-                                        // console.log(response.json());
-                                        return response.json();
-                                    })
-                                );
-                });
-
-                return Promise.all(services);
-            })
-            .then(response => {
-                var services = [];
-
-                response.forEach(res => {
-                    res.movie_results.forEach(show => {
-                        services.push(fetch(config.api_host+ "tv/" +show.id+ "?api_key=" +config.api_key)
-                                        .then(function(response) {
-                                            console.log(response.json());
-                                            return response.json();
-                                        })
-                                    );
-                    });
-                });
-
-                return Promise.all(services);
-            })
-            .then(response => {
-
-                // TODO: render under one loop iteration and sort array by date
-                render.today_shows = renderTodayShows(response);
-                render.next_seven_days = renderNextSevenDaysShows(response);
-                render.air_dates = renderAirDate(response);
-
-                if (view == 'my_shows') {
-                    document.getElementById('view-render').innerHTML = render.air_dates;
-                    document.querySelectorAll('[data-show-delete]').forEach((e) => {
-                        e.addEventListener('click', deleteShow);
-                    });
-                } else {
-                    document.getElementById('view-render').innerHTML = render.today_shows;
-                    document.getElementById('view-render').innerHTML += render.next_seven_days;
-                }
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
+    if (view == 'my_shows') {
+        document.getElementById('view-render').innerHTML = render.air_dates;
+        document.querySelectorAll('[data-show-delete]').forEach((e) => {
+            e.addEventListener('click', deleteShow);
+        });
+    } else {
+        document.getElementById('view-render').innerHTML = render.today_shows;
+        document.getElementById('view-render').innerHTML += render.next_seven_days;
+    }
 }
 
 
@@ -106,7 +58,7 @@ function dateFormat(date) {
 function deleteShow() {
     let show_id = this.getAttribute('data-show-delete');
     
-    fetch(config.api_host+ "tv/" +show_id+ "/external_ids?api_key=" +config.api_key)
+    fetch(config.api.host+ "tv/" +show_id+ "/external_ids?api_key=" +config.api.key)
         .then(response => { 
             return response.json(); 
         })
@@ -152,7 +104,7 @@ function renderTodayShows(shows) {
         if (currentDate == showDate) {
             todayShows += `<div>
                                 <h3>${show.name}</h3>
-                                <img src='${config.api_base_url}w92/${show.poster_path}'>
+                                <img src='${config.api.base_url}w92/${show.poster_path}'>
                                 <p>Rating: ${show.vote_average} </p>
                            </div>`;
         }
@@ -173,7 +125,7 @@ function renderNextSevenDaysShows(shows) {
 
         if (Math.abs(currentDate - showDate) / (1000*60*60) < 7*24) {
             nextSevenDaysShows += `<div class='d-flex pb-2'>
-                                        <img src='${config.api_base_url}w45/${show.poster_path}'>
+                                        <img src='${config.api.base_url}w45/${show.poster_path}'>
                                         <span class='pl-1'>
                                             <h6>${show.name}</h6>
                                             <div class='small'>Rating: ${show.vote_average} </div>
@@ -203,7 +155,7 @@ function renderAirDate(shows) {
         airDates += `<div class='mb-3 d-flex justify-content-between'>
                         <div>
                             <div>
-                                <img src='${config.api_base_url}w185/${show.backdrop_path}'>
+                                <img src='${config.api.base_url}w185/${show.backdrop_path}'>
                             </div>
                             <div>
                                 <h6 class='m-0'>${show.name}</h6>
