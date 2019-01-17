@@ -5,6 +5,9 @@
  *   movies: [],
  *   synced: false,
  * }
+ * 
+ * Reference to why switch from storage.sync to storage.local:
+ * https://stackoverflow.com/questions/33015723/unchecked-runtime-lasterror-while-running-storage-set-quota-bytes-per-item-quot
  */
 var Storage = (function() {
     'use strict';

@@ -22,13 +22,13 @@ function createAddButton() {
     return button;
 }
 
-function bindAddClickEvent() {
+async function bindAddClickEvent() {
     var imdb_id = window.location.pathname.split('/')[2];
-  
-    // if (isShowAdded(imdb_id)) {
-    //     message('You already added this TV show.');
-    //     return;
-    // }
+    
+    if (await isShowAdded(imdb_id)) {
+        message('You already added this TV show.');
+        return;
+    }
 
     Api.getByImdb(imdb_id)
         .then((response) => {
@@ -38,8 +38,6 @@ function bindAddClickEvent() {
             return Api.getById(response.data.id);
         })
         .then((show) => {
-            console.log(show);
-            
             Storage.insert({
                 id: show.id,
                 name: show.name,
@@ -49,7 +47,8 @@ function bindAddClickEvent() {
                 poster_path: show.poster_path,
                 next_episode_to_air: show.next_episode_to_air,
                 last_episode_to_air: show.last_episode_to_air,
-                vote_average: show.vote_average
+                vote_average: show.vote_average,
+                imdb_id: imdb_id
             });
             
             message('TV show successfully added.');
@@ -60,11 +59,14 @@ function bindAddClickEvent() {
 }
 
 async function isShowAdded(imdb_id) {
-    var storage = await Storage.get();
+    let storage = await Storage.get();
+    let merged_shows = storage.shows.concat(storage.movies);
 
-    storage.shows.find((show) => {
+    let is_founded = merged_shows.find((show) => {
         return show.imdb_id == imdb_id;
     });
+    
+    return is_founded === undefined ? false : true;
 }
 
 function message(text) {
