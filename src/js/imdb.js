@@ -1,25 +1,11 @@
-var add_button = createAddButton();
-var button_wrapper = createAddButtonWrapper();
-button_wrapper.appendChild(add_button);
+init();
 
-document.getElementById('wrapper').appendChild(button_wrapper);
-
-function createAddButtonWrapper() {
-    var wrapper = document.createElement('div');
-    wrapper.setAttribute('class', 'imdb-container'); 
-    wrapper.style.background = 'green';
-
-    return wrapper;
-}
-
-function createAddButton() {
-    var button = document.createElement('button');
-    button.innerHTML = `Add`;
-    button.setAttribute('class', 'test-class'); 
-    button.style.color = 'red';
-    button.addEventListener('click', bindAddClickEvent);
-
-    return button;
+function init() {
+    let add_button = DOM.renderImdbAddButton();
+    let button_wrapper = DOM.renderImdbAddButtonWrapper();
+    button_wrapper.appendChild(add_button);
+    
+    document.getElementById('wrapper').appendChild(button_wrapper);
 }
 
 async function bindAddClickEvent() {
@@ -67,8 +53,4 @@ async function isShowAdded(imdb_id) {
     });
     
     return is_founded === undefined ? false : true;
-}
-
-function message(text) {
-    alert(text);
 }

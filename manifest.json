@@ -25,7 +25,9 @@
             "run_at": "document_idle",
             "css": ["src/css/imdb.css"],
             "js": [
+                "src/js/helpers.js",
                 "src/js/modules/storage.js",
+                "src/js/modules/dom.js",
                 "src/js/modules/api.js",
                 "src/js/imdb.js" 
             ]
