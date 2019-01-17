@@ -55,18 +55,13 @@ function dateFormat(date) {
 }
 
 
-function deleteShow() {
-    let show_id = this.getAttribute('data-show-delete');
-    
-    fetch(config.api.host+ "tv/" +show_id+ "/external_ids?api_key=" +config.api.key)
-        .then(response => { 
-            return response.json(); 
-        })
-        .then(async function(data) {
-            deleteFromStorage(STORAGE_IMDB, data.imdb_id);
+async function deleteShow() {
+    let imdb_id = this.getAttribute('data-show-delete');
 
-            init('my_shows');
-        });
+    Storage.setKey('shows');
+    await Storage.destroy(imdb_id);
+
+    init('my_shows');
 }
 
 
@@ -167,7 +162,7 @@ function renderAirDate(shows) {
                             </div>
                         </div>
                         <div>
-                            <button type="button" class="close" data-show-delete=${show.id} aria-label="Close">
+                            <button type="button" class="close" data-show-delete=${show.imdb_id} aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>

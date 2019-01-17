@@ -35,7 +35,7 @@ var Storage = (function() {
     }
 
     async function insert(show) {
-        var data = await get();
+        let data = await get();
         data[getKey()].push(show);
 
         chrome.storage.local.set({[STORAGE_KEY]: data}, () => {
@@ -44,10 +44,10 @@ var Storage = (function() {
     }
 
     async function destroy(imdb_id) {
-        var data = await get();
-        imdb_ids = imdb_ids.filter((id) => id !== imdb_id);
+        let data = await get();
+        data[getKey()] = data[getKey()].filter((show) => show.imdb_id != imdb_id);
     
-        chrome.storage.local.set({[STORAGE_KEY]: imdb_ids}, () => {
+        chrome.storage.local.set({[STORAGE_KEY]: data}, () => {
             return true;
         });
     }
