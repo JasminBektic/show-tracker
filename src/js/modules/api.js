@@ -1,14 +1,20 @@
 var Api = (function() {
     'use strict';
 
-    var config = Storage.getConfig();
+    let config = Storage.getConfig();
 
     /* =================== private methods ================= */
+    function getFindByImdbUrl(imdb_id) {
+        return `${config.api.host}find/${imdb_id}?api_key=${config.api.key}&external_source=imdb_id`;
+    }
 
-  
+    function getFindByIdUrl(id) {
+        return `${config.api.host}tv/${id}?api_key=${config.api.key}`;
+    }
+
     /* =================== public methods ================== */
     function getByImdb(imdb_id) {
-        var url = `${config.api.host}find/${imdb_id}?api_key=${config.api.key}&external_source=imdb_id`;
+        let url = getFindByImdbUrl(imdb_id);
      
         return new Promise(resolve => {
             fetch(url)
@@ -19,7 +25,7 @@ var Api = (function() {
     }
 
     function getById(id) {
-        var url = `${config.api.host}tv/${id}?api_key=${config.api.key}`;
+        let url = getFindByIdUrl(id);
      
         return new Promise(resolve => {
             fetch(url)
