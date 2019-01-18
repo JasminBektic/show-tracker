@@ -39,12 +39,12 @@ var Api = (function() {
         return data.tv_results.length == 0 ? 
         {
             data: data.tv_movies[0],
-            key_type: 'movies'
+            key_type: MOVIES
         }
             :
         {
             data: data.tv_results[0],
-            key_type: 'shows'
+            key_type: SHOWS
         };
     }
   

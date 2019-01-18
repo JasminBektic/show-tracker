@@ -1,25 +1,15 @@
 let DOM = (function() {
     'use strict';
 
+    let config = Storage.getConfig();
+
     /* =================== private methods ================= */
-
-    /* =================== public methods ================== */
-    function renderImdbAddButtonWrapper() {
-        var wrapper = document.createElement('div');
-        wrapper.setAttribute('class', 'imdb-container'); 
-        wrapper.style.background = 'green';
-    
-        return wrapper;
-    }
-
     function renderImdbAddButton() {
-        var button = document.createElement('button');
-        button.innerHTML = `Add`;
-        button.setAttribute('class', 'test-class'); 
-        button.style.color = 'red';
-        button.addEventListener('click', bindAddClickEvent);
-    
-        return button;
+        let button_wrapper = document.createElement('div');
+        button_wrapper.setAttribute('class', 'imdb-container'); 
+        button_wrapper.innerHTML = `<button class="test-class">Add</button>`;
+
+        return button_wrapper;
     }
 
     function renderTodayShows(shows) {
@@ -105,13 +95,34 @@ let DOM = (function() {
     
         return all_shows;
     }
+
+    /* =================== public methods ================== */
+    function render(type, data) {
+        let renderedData = '';
+
+        switch(type) {
+            case IMDB_ADD_BUTTON:
+                renderedData = renderImdbAddButton();
+                break;
+
+            case TODAY_SHOWS:
+                renderedData = renderTodayShows(data);
+                break;
+
+            case SEVEN_DAYS_SHOWS:
+                renderedData = renderNextSevenDaysShows(data);
+                break;
+
+            case SHOWS:
+                renderedData = renderShows(data);
+                break;
+        }
+
+        return renderedData;
+    }
   
     /* =============== export public methods =============== */
     return {
-        renderTodayShows: renderTodayShows,
-        renderNextSevenDaysShows: renderNextSevenDaysShows,
-        renderShows: renderShows,
-        renderImdbAddButtonWrapper: renderImdbAddButtonWrapper,
-        renderImdbAddButton: renderImdbAddButton
+        render: render
     };
 }());

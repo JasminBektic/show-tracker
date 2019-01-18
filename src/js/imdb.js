@@ -1,11 +1,10 @@
 init();
 
 function init() {
-    let add_button = DOM.renderImdbAddButton();
-    let button_wrapper = DOM.renderImdbAddButtonWrapper();
-    button_wrapper.appendChild(add_button);
-    
-    document.getElementById('wrapper').appendChild(button_wrapper);
+    let add_button = DOM.render(IMDB_ADD_BUTTON);
+    add_button.firstChild.addEventListener('click', bindAddClickEvent);
+
+    document.getElementById('wrapper').appendChild(add_button);
 }
 
 async function bindAddClickEvent() {

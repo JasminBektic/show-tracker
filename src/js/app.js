@@ -25,9 +25,9 @@ async function init(view) {
     let config = Storage.getConfig();
 
     // TODO: render under one loop iteration and sort array by date
-    render.today_shows = DOM.renderTodayShows(storage.shows);
-    render.next_seven_days = DOM.renderNextSevenDaysShows(storage.shows);
-    render.air_dates = DOM.renderShows(storage.shows);
+    render.today_shows = DOM.render(TODAY_SHOWS, storage.shows);
+    render.next_seven_days = DOM.render(SEVEN_DAYS_SHOWS, storage.shows);
+    render.air_dates = DOM.render(SHOWS, storage.shows);
 
     if (view == 'my_shows') {
         document.getElementById('view-render').innerHTML = render.air_dates;

@@ -6,9 +6,9 @@
     "author": "Jasmin Bektic",       
     "browser_action": {
         "default_icon": {                   
-            "16": "tab-icon.png",          
-            "24": "tab-icon.png",          
-            "32": "tab-icon.png"            
+            "16": "icon.png",          
+            "24": "icon.png",          
+            "32": "icon.png"            
         },
         "default_title": "Show Tracker",
         "default_popup": "src/html/popup.html"
@@ -25,7 +25,7 @@
             "run_at": "document_idle",
             "css": ["src/css/imdb.css"],
             "js": [
-                "src/js/helpers.js",
+                "src/js/globals.js",
                 "src/js/modules/storage.js",
                 "src/js/modules/dom.js",
                 "src/js/modules/api.js",
