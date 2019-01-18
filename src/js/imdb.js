@@ -10,8 +10,8 @@ function init() {
 async function bindAddClickEvent() {
     var imdb_id = window.location.pathname.split('/')[2];
     
-    if (await isShowAdded(imdb_id)) {
-        message('You already added this TV show.');
+    if (added_show = await isShowAdded(imdb_id)) {
+        message(`You already added ${added_show.name}.`);
         return;
     }
 
@@ -23,7 +23,7 @@ async function bindAddClickEvent() {
             return Api.getById(response.data.id);
         })
         .then((show) => {
-            Storage.insert({
+            Storage.insert(Storage.getKey() == SHOWS ? {
                 id: show.id,
                 name: show.name,
                 backdrop_path: show.backdrop_path,
@@ -34,9 +34,19 @@ async function bindAddClickEvent() {
                 last_episode_to_air: show.last_episode_to_air,
                 vote_average: show.vote_average,
                 imdb_id: imdb_id
+            }
+                :
+            {
+                id: show.id,
+                name: show.title,
+                backdrop_path: show.backdrop_path,
+                genres: show.genres,
+                release_date: show.release_date,
+                vote_average: show.vote_average,
+                imdb_id: imdb_id
             });
             
-            message('TV show successfully added.');
+            message((Storage.getKey() == SHOWS ? 'TV show' : 'Movie') + ' successfully added.');
         })
         .catch(() => {
             message('An error occurred, try again.');
@@ -47,9 +57,9 @@ async function isShowAdded(imdb_id) {
     let storage = await Storage.get();
     let merged_shows = storage.shows.concat(storage.movies);
 
-    let is_founded = merged_shows.find((show) => {
+    let founded = merged_shows.find((show) => {
         return show.imdb_id == imdb_id;
     });
     
-    return is_founded === undefined ? false : true;
+    return founded;
 }

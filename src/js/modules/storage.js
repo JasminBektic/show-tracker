@@ -24,14 +24,13 @@ var Storage = (function() {
         }
     }
 
-    function getKey() {
-        return key;
-    }
-
-  
     /* =================== public methods ================== */
     function setKey(k) {
         key = k
+    }
+
+    function getKey() {
+        return key;
     }
 
     async function insert(show) {
@@ -82,6 +81,7 @@ var Storage = (function() {
       destroy: destroy,
       get: get,
       getConfig: getConfig,
-      setKey: setKey
+      setKey: setKey,
+      getKey: getKey
     };
 }());

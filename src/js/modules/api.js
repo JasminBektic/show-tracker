@@ -9,7 +9,7 @@ var Api = (function() {
     }
 
     function getFindByIdUrl(id) {
-        return `${config.api.host}tv/${id}?api_key=${config.api.key}`;
+        return `${config.api.host}movie/${id}?api_key=${config.api.key}`;
     }
 
     /* =================== public methods ================== */
@@ -38,7 +38,7 @@ var Api = (function() {
     function imdbResponsePurifier(data) {
         return data.tv_results.length == 0 ? 
         {
-            data: data.tv_movies[0],
+            data: data.movie_results[0],
             key_type: MOVIES
         }
             :
