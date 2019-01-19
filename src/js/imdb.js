@@ -10,7 +10,7 @@ function init() {
 async function bindAddClickEvent() {
     var imdb_id = window.location.pathname.split('/')[2];
     
-    if (added_show = await isShowAdded(imdb_id)) {
+    if (added_show = await findAddedShow(imdb_id)) {
         message(`You already added ${added_show.name}.`);
         return;
     }
@@ -53,7 +53,7 @@ async function bindAddClickEvent() {
         });
 }
 
-async function isShowAdded(imdb_id) {
+async function findAddedShow(imdb_id) {
     let storage = await Storage.get();
     let merged_shows = storage.shows.concat(storage.movies);
 

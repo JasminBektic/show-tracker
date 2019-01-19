@@ -96,6 +96,31 @@ let DOM = (function() {
         return all_shows;
     }
 
+    function renderMovies(movies) {
+        var all_movies = '';
+    
+        movies.forEach(movie => {
+            all_movies += `<div class='mb-3 d-flex justify-content-between'>
+                                <div>
+                                    <div>
+                                        <img src='${config.api.base_url}w185/${movie.backdrop_path}'>
+                                    </div>
+                                    <div>
+                                        <h6 class='m-0'>${movie.name}</h6>
+                                        <div class='small font-italic'><span class='glyphicon glyphicon-star'></span>${movie.vote_average} </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button type="button" class="close" data-show-delete=${movie.imdb_id} aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>`;
+        });
+
+        return all_movies;
+    }
+
     /* =================== public methods ================== */
     function render(type, data) {
         let renderedData = '';
@@ -115,6 +140,10 @@ let DOM = (function() {
 
             case SHOWS:
                 renderedData = renderShows(data);
+                break;
+
+            case MOVIES:
+                renderedData = renderMovies(data);
                 break;
         }
 

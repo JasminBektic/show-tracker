@@ -9,6 +9,10 @@ var Api = (function() {
     }
 
     function getFindByIdUrl(id) {
+        return `${config.api.host}tv/${id}?api_key=${config.api.key}`;
+    }
+
+    function getFindByIdMovieUrl(id) {
         return `${config.api.host}movie/${id}?api_key=${config.api.key}`;
     }
 
@@ -25,7 +29,7 @@ var Api = (function() {
     }
 
     function getById(id) {
-        let url = getFindByIdUrl(id);
+        let url = Storage.getKey() == SHOWS ? getFindByIdUrl(id) : getFindByIdMovieUrl(id);
      
         return new Promise(resolve => {
             fetch(url)
