@@ -1,8 +1,6 @@
-var render = {};
-
 document.addEventListener('DOMContentLoaded', init);
 document.querySelectorAll('[data-tab]').forEach((e) => {
-    e.addEventListener('click', renderView);
+    e.addEventListener('click', bindTabClick);
 });
 
 /**
@@ -20,37 +18,9 @@ document.querySelectorAll('[data-tab]').forEach((e) => {
 // var storage = Storage.get();
 // console.log(storage);
 
-async function init(view) {
-    let storage = await Storage.get();
-    let config = Storage.getConfig();
-
-    // TODO: render under one loop iteration and sort array by date
-    render.today_shows = DOM.render(TODAY_SHOWS, storage.shows);
-    render.next_seven_days = DOM.render(SEVEN_DAYS_SHOWS, storage.shows);
-    render.air_dates = DOM.render(SHOWS, storage.shows);
-    render.movies = DOM.render(MOVIES, storage.movies);
-
-    switch(view) {
-        case SHOWS:
-            document.getElementById('view-render').innerHTML = render.air_dates;
-            document.querySelectorAll('[data-show-delete]').forEach((e) => {
-                e.addEventListener('click', deleteShow);
-            });
-            break;
-
-        case MOVIES:
-            document.getElementById('view-render').innerHTML = render.movies;
-            document.querySelectorAll('[data-movie-delete]').forEach((e) => {
-                e.addEventListener('click', deleteMovie);
-            });
-            break;
-
-        default:
-            document.getElementById('view-render').innerHTML = render.today_shows;
-            document.getElementById('view-render').innerHTML += render.next_seven_days;
-    }
+function init(view) {
+    setView(view);
 }
-
 
 async function deleteShow() {
     let imdb_id = this.getAttribute('data-show-delete');
@@ -68,32 +38,34 @@ async function deleteMovie() {
     init(MOVIES);
 }
 
-
-function renderView() {
+function bindTabClick() {
     let tab = this;
     
-    switch(tab.getAttribute('data-tab')) {
+    setView(tab.getAttribute('data-tab'));
+    activeTab(tab);
+}
+
+async function setView(view) {
+    let storage = await Storage.get();
+    let view_render = document.getElementById('view-render');
+
+    switch(view) {
         case SHOWS:
-            document.getElementById('view-render').innerHTML = render.air_dates;
+            view_render.innerHTML = DOM.render(SHOWS, storage.shows);
             document.querySelectorAll('[data-show-delete]').forEach((e) => {
                 e.addEventListener('click', deleteShow);
             });
             break;
 
         case MOVIES:
-            document.getElementById('view-render').innerHTML = render.movies;
+            view_render.innerHTML = DOM.render(MOVIES, storage.movies);
             document.querySelectorAll('[data-movie-delete]').forEach((e) => {
                 e.addEventListener('click', deleteMovie);
             });
             break;
 
         default:
-            document.getElementById('view-render').innerHTML = render.today_shows;
-            document.getElementById('view-render').innerHTML += render.next_seven_days;
+            view_render.innerHTML = DOM.render(TODAY_SHOWS, storage.shows);
+            view_render.innerHTML += DOM.render(SEVEN_DAYS_SHOWS, storage.shows);
     }
-
-    document.querySelectorAll('[data-tab]').forEach((e) => {
-        e.classList.remove('active');
-    });
-    tab.classList.add('active');
 }

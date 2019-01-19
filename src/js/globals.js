@@ -16,6 +16,13 @@ function dateFormat(date) {
     return date.toLocaleDateString('en-US', options);
 }
 
+function activeTab(tab) {
+    document.querySelectorAll('[data-tab]').forEach((e) => {
+        e.classList.remove('active');
+    });
+    tab.classList.add('active');
+}
+
 function message(text) {
     alert(text);
 }
