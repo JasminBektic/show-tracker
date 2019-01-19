@@ -111,7 +111,7 @@ let DOM = (function() {
                                     </div>
                                 </div>
                                 <div>
-                                    <button type="button" class="close" data-show-delete=${movie.imdb_id} aria-label="Close">
+                                    <button type="button" class="close" data-movie-delete=${movie.imdb_id} aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>

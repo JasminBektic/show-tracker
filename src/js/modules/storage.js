@@ -27,6 +27,7 @@ var Storage = (function() {
     /* =================== public methods ================== */
     function setKey(k) {
         key = k
+        return this;
     }
 
     function getKey() {

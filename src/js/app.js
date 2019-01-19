@@ -17,8 +17,8 @@ document.querySelectorAll('[data-tab]').forEach((e) => {
 
 //  chrome.storage.local.clear(function() {});
 
-var storage = Storage.get();
-console.log(storage);
+// var storage = Storage.get();
+// console.log(storage);
 
 async function init(view) {
     let storage = await Storage.get();
@@ -40,9 +40,9 @@ async function init(view) {
 
         case MOVIES:
             document.getElementById('view-render').innerHTML = render.movies;
-            // document.querySelectorAll('[data-show-delete]').forEach((e) => {
-            //     e.addEventListener('click', deleteShow);
-            // });
+            document.querySelectorAll('[data-movie-delete]').forEach((e) => {
+                e.addEventListener('click', deleteMovie);
+            });
             break;
 
         default:
@@ -55,10 +55,17 @@ async function init(view) {
 async function deleteShow() {
     let imdb_id = this.getAttribute('data-show-delete');
 
-    Storage.setKey('shows');
-    await Storage.destroy(imdb_id);
-
+    await Storage.setKey(SHOWS)
+                 .destroy(imdb_id);
     init(SHOWS);
+}
+
+async function deleteMovie() {
+    let imdb_id = this.getAttribute('data-movie-delete');
+
+    await Storage.setKey(MOVIES)
+                 .destroy(imdb_id);
+    init(MOVIES);
 }
 
 
@@ -75,6 +82,9 @@ function renderView() {
 
         case MOVIES:
             document.getElementById('view-render').innerHTML = render.movies;
+            document.querySelectorAll('[data-movie-delete]').forEach((e) => {
+                e.addEventListener('click', deleteMovie);
+            });
             break;
 
         default:
