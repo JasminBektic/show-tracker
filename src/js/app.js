@@ -1,8 +1,3 @@
-document.addEventListener('DOMContentLoaded', init);
-document.querySelectorAll('[data-tab]').forEach((e) => {
-    e.addEventListener('click', bindTabClick);
-});
-
 /**
  * TODO:
  * - Current version provides data from init requests (number of requests are the number of 
@@ -18,54 +13,61 @@ document.querySelectorAll('[data-tab]').forEach((e) => {
 // var storage = Storage.get();
 // console.log(storage);
 
-function init(view) {
-    setView(view);
-}
+App = {
+    init: function() {
+        App.setView();
+    },
 
-async function deleteShow() {
-    let imdb_id = this.getAttribute('data-show-delete');
+    deleteShow: async function() {
+        let imdb_id = this.getAttribute('data-show-delete');
 
-    await Storage.setKey(SHOWS)
-                 .destroy(imdb_id);
-    init(SHOWS);
-}
+        await Storage.setKey(SHOWS)
+                    .destroy(imdb_id);
+        init(SHOWS);
+    },
 
-async function deleteMovie() {
-    let imdb_id = this.getAttribute('data-movie-delete');
+    deleteMovie: async function() {
+        let imdb_id = this.getAttribute('data-movie-delete');
 
-    await Storage.setKey(MOVIES)
-                 .destroy(imdb_id);
-    init(MOVIES);
-}
+        await Storage.setKey(MOVIES)
+                    .destroy(imdb_id);
+        init(MOVIES);
+    },
 
-function bindTabClick() {
-    let tab = this;
+    bindTabClick: function() {
+        let tab = this;
     
-    setView(tab.getAttribute('data-tab'));
-    activeTab(tab);
-}
+        App.setView(tab.getAttribute('data-tab'));
+        activeTab(tab);
+    },
 
-async function setView(view) {
-    let storage = await Storage.get();
-    let view_render = document.getElementById('view-render');
+    setView: async function(view) {
+        let storage = await Storage.get();
+        let view_render = document.getElementById('view-render');
 
-    switch(view) {
-        case SHOWS:
-            view_render.innerHTML = DOM.render(SHOWS, storage.shows);
-            document.querySelectorAll('[data-show-delete]').forEach((e) => {
-                e.addEventListener('click', deleteShow);
-            });
-            break;
+        switch(view) {
+            case SHOWS:
+                view_render.innerHTML = DOM.render(SHOWS, storage.shows);
+                document.querySelectorAll('[data-show-delete]').forEach((e) => {
+                    e.addEventListener('click', App.deleteShow);
+                });
+                break;
 
-        case MOVIES:
-            view_render.innerHTML = DOM.render(MOVIES, storage.movies);
-            document.querySelectorAll('[data-movie-delete]').forEach((e) => {
-                e.addEventListener('click', deleteMovie);
-            });
-            break;
+            case MOVIES:
+                view_render.innerHTML = DOM.render(MOVIES, storage.movies);
+                document.querySelectorAll('[data-movie-delete]').forEach((e) => {
+                    e.addEventListener('click', App.deleteMovie);
+                });
+                break;
 
-        default:
-            view_render.innerHTML = DOM.render(TODAY_SHOWS, storage.shows);
-            view_render.innerHTML += DOM.render(SEVEN_DAYS_SHOWS, storage.shows);
+            default:
+                view_render.innerHTML = DOM.render(TODAY_SHOWS, storage.shows);
+                view_render.innerHTML += DOM.render(SEVEN_DAYS_SHOWS, storage.shows);
+        }
     }
 }
+
+document.addEventListener('DOMContentLoaded', App.init);
+document.querySelectorAll('[data-tab]').forEach((e) => {
+    e.addEventListener('click', App.bindTabClick);
+});
