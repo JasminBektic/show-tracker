@@ -16,11 +16,23 @@ function dateFormat(date) {
     return date.toLocaleDateString('en-US', options);
 }
 
-function activeTab(tab) {
+function setActiveTab(tab) {
     document.querySelectorAll('[data-tab]').forEach((e) => {
         e.classList.remove('active');
     });
     tab.classList.add('active');
+}
+
+function getActiveTab() {
+    let active_tab = '';
+
+    document.querySelectorAll('[data-tab]').forEach((e) => {
+        if(e.className.includes('active')) {
+            active_tab = e.getAttribute('data-tab');
+        }
+    });
+
+    return active_tab;
 }
 
 function message(text) {

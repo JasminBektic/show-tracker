@@ -1,7 +1,7 @@
 Imdb = {
     init: function() {
         let add_button = DOM.render(IMDB_ADD_BUTTON);
-        add_button.firstChild.addEventListener('click', bindAddClickEvent);
+        add_button.firstChild.addEventListener('click', Imdb.bindAddClickEvent);
     
         document.getElementById('wrapper').appendChild(add_button);
     },
@@ -9,7 +9,7 @@ Imdb = {
     bindAddClickEvent: async function() {
         var imdb_id = window.location.pathname.split('/')[2];
         
-        if (added_show = await findAddedShow(imdb_id)) {
+        if (added_show = await Imdb.findAddedShow(imdb_id)) {
             message(`You already added ${added_show.name}.`);
             return;
         }

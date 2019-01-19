@@ -16,48 +16,74 @@
 App = {
     init: function() {
         App.setView();
+        document.getElementById('search-filter').addEventListener('keyup', App.searchFilter);
+    },
+
+    searchFilter: async function(event) {
+        let storage = await Storage.get();
+        let active_tab = getActiveTab();
+
+        if (active_tab == SHOWS) {
+            let filtered_shows = storage.shows.filter((show) => {
+                return show.name.toLowerCase().includes(event.target.value.toLowerCase());
+            });
+            App.setView(SHOWS, filtered_shows);
+        }
+
+        if (active_tab == MOVIES) {
+            let filtered_movies = storage.movies.filter((movie) => {
+                return movie.name.toLowerCase().includes(event.target.value.toLowerCase());
+            });
+            App.setView(MOVIES, filtered_movies);
+        }
     },
 
     deleteShow: async function() {
         let imdb_id = this.getAttribute('data-show-delete');
 
         await Storage.setKey(SHOWS)
-                    .destroy(imdb_id);
-        init(SHOWS);
+                     .destroy(imdb_id);
+        App.setView(SHOWS);
     },
 
     deleteMovie: async function() {
         let imdb_id = this.getAttribute('data-movie-delete');
 
         await Storage.setKey(MOVIES)
-                    .destroy(imdb_id);
-        init(MOVIES);
+                     .destroy(imdb_id);
+        App.setView(MOVIES);
     },
 
     bindTabClick: function() {
         let tab = this;
-    
+
         App.setView(tab.getAttribute('data-tab'));
-        activeTab(tab);
+        setActiveTab(tab);
+        document.getElementById('search-filter').value = '';
     },
 
-    setView: async function(view) {
+    setView: async function(view, filtered_data = null) {
         let storage = await Storage.get();
         let view_render = document.getElementById('view-render');
+        let search_filter = document.getElementById('search-filter')
+
+        search_filter.style.display = 'none';
 
         switch(view) {
             case SHOWS:
-                view_render.innerHTML = DOM.render(SHOWS, storage.shows);
+                view_render.innerHTML = DOM.render(SHOWS, filtered_data || storage.shows);
                 document.querySelectorAll('[data-show-delete]').forEach((e) => {
                     e.addEventListener('click', App.deleteShow);
                 });
+                search_filter.style.display = 'block';
                 break;
 
             case MOVIES:
-                view_render.innerHTML = DOM.render(MOVIES, storage.movies);
+                view_render.innerHTML = DOM.render(MOVIES, filtered_data || storage.movies);
                 document.querySelectorAll('[data-movie-delete]').forEach((e) => {
                     e.addEventListener('click', App.deleteMovie);
                 });
+                search_filter.style.display = 'block';
                 break;
 
             default:
