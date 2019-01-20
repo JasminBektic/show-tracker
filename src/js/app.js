@@ -15,6 +15,9 @@
 App = {
     init: function() {
         App.setView();
+        document.querySelectorAll('[data-tab]').forEach((e) => {
+            e.addEventListener('click', App.bindTabClick);
+        });
         document.getElementById('search-filter').addEventListener('keyup', App.searchFilter);
         document.getElementById('delete-all').addEventListener('click', App.deleteAll);
     },
@@ -75,8 +78,6 @@ App = {
         let view_render = document.getElementById('view-render');
         let search_filter = document.getElementById('search-filter');
 
-        console.log(storage);
-
         search_filter.style.display = 'none';
 
         switch(view) {
@@ -104,6 +105,3 @@ App = {
 }
 
 document.addEventListener('DOMContentLoaded', App.init);
-document.querySelectorAll('[data-tab]').forEach((e) => {
-    e.addEventListener('click', App.bindTabClick);
-});

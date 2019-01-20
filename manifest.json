@@ -15,7 +15,10 @@
     },
     "background": {
         "scripts": [
-            "src/js/sync.todo.js"
+            "src/js/globals.js",
+            "src/js/modules/storage.js",
+            "src/js/modules/api.js",
+            "src/js/sync.js"
         ],
         "persistent": false
     },

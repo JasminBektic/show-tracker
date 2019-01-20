@@ -3,6 +3,7 @@ const MOVIES = 'movies';
 const IMDB_ADD_BUTTON = 'imdbAddButton';
 const TODAY_SHOWS = 'todayShows';
 const SEVEN_DAYS_SHOWS = 'nextSevenDaysShows';
+const SYNC_TIME = 5000;
 
 
 function dateFormat(date) {
