@@ -52,6 +52,15 @@ var Storage = (function() {
         });
     }
 
+    async function destroyMultiple() {
+        let data = await get();
+        data[getKey()] = [];
+
+        chrome.storage.local.set({[STORAGE_KEY]: data}, () => {
+            return true;
+        });
+    }
+
     function get() {
         return new Promise(resolve => {
             chrome.storage.local.get(STORAGE_KEY, (res) => {
@@ -80,6 +89,7 @@ var Storage = (function() {
     return {
       insert: insert,
       destroy: destroy,
+      destroyMultiple: destroyMultiple,
       get: get,
       getConfig: getConfig,
       setKey: setKey,

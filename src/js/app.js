@@ -6,17 +6,17 @@
  *   from injected button where 2 requests should be triggered (api/find and api/tv)
  * - Refactor promise waterfall
  * - Tv shows will be limited to 40 imports
+ * - Strict clarification for storage objects
  */
 
 //  chrome.storage.local.clear(function() {});
 
-// var storage = Storage.get();
-// console.log(storage);
 
 App = {
     init: function() {
         App.setView();
         document.getElementById('search-filter').addEventListener('keyup', App.searchFilter);
+        document.getElementById('delete-all').addEventListener('click', App.deleteAll);
     },
 
     searchFilter: async function(event) {
@@ -54,6 +54,14 @@ App = {
         App.setView(MOVIES);
     },
 
+    deleteAll: async function() {
+        let active_tab = getActiveTab();
+
+        await Storage.setKey(active_tab)
+                     .destroyMultiple();
+        App.setView(active_tab);
+    },
+
     bindTabClick: function() {
         let tab = this;
 
@@ -65,7 +73,9 @@ App = {
     setView: async function(view, filtered_data = null) {
         let storage = await Storage.get();
         let view_render = document.getElementById('view-render');
-        let search_filter = document.getElementById('search-filter')
+        let search_filter = document.getElementById('search-filter');
+
+        console.log(storage);
 
         search_filter.style.display = 'none';
 
