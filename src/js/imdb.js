@@ -22,28 +22,12 @@ Imdb = {
                 return Api.getById(response.data.id);
             })
             .then((show) => {
-                Storage.insert(Storage.getKey() == SHOWS ? {
-                    id: show.id,
-                    name: show.name,
-                    backdrop_path: show.backdrop_path,
-                    genres: show.genres,
-                    episode_run_time: show.episode_run_time,
-                    poster_path: show.poster_path,
-                    next_episode_to_air: show.next_episode_to_air,
-                    last_episode_to_air: show.last_episode_to_air,
-                    vote_average: show.vote_average,
-                    imdb_id: imdb_id
-                }
-                    :
-                {
-                    id: show.id,
-                    name: show.title,
-                    backdrop_path: show.backdrop_path,
-                    genres: show.genres,
-                    release_date: show.release_date,
-                    vote_average: show.vote_average,
-                    imdb_id: imdb_id
-                });
+                show.imdb_id = imdb_id;
+                
+                Storage.insert(Storage.getKey() == SHOWS ? 
+                    Storage.prepareShowStructure(show)
+                        :
+                    Storage.prepareMovieStructure(show));
                 
                 message((Storage.getKey() == SHOWS ? 'TV show' : 'Movie') + ' successfully added.');
             })

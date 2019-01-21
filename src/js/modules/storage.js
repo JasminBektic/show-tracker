@@ -20,7 +20,8 @@ var Storage = (function() {
         return {
             shows: [],
             movies: [],
-            synced: false
+            sync_ids: [],
+            synced: Date.now()
         }
     }
 
@@ -32,6 +33,33 @@ var Storage = (function() {
 
     function getKey() {
         return key;
+    }
+
+    function prepareShowStructure(show) {
+        return {
+            id: show.id,
+            name: show.name,
+            backdrop_path: show.backdrop_path,
+            genres: show.genres,
+            episode_run_time: show.episode_run_time,
+            poster_path: show.poster_path,
+            next_episode_to_air: show.next_episode_to_air,
+            last_episode_to_air: show.last_episode_to_air,
+            vote_average: show.vote_average,
+            imdb_id: show.imdb_id
+        };
+    }
+
+    function prepareMovieStructure(show) {
+        return {
+            id: show.id,
+            name: show.title,
+            backdrop_path: show.backdrop_path,
+            genres: show.genres,
+            release_date: show.release_date,
+            vote_average: show.vote_average,
+            imdb_id: show.imdb_id
+        };
     }
 
     async function insert(show) {
@@ -73,6 +101,12 @@ var Storage = (function() {
         });
     }
 
+    function sync(data) {
+        chrome.storage.local.set({[STORAGE_KEY]: data}, () => {
+            return true;
+        });
+    }
+
     function getConfig() {
         // TODO: sync in storage from config.json
         // hardcoded for now
@@ -93,6 +127,9 @@ var Storage = (function() {
       get: get,
       getConfig: getConfig,
       setKey: setKey,
-      getKey: getKey
+      getKey: getKey,
+      prepareShowStructure: prepareShowStructure,
+      prepareMovieStructure: prepareMovieStructure,
+      sync: sync
     };
 }());

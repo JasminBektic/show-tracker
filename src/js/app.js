@@ -9,7 +9,7 @@
  * - Strict clarification for storage objects
  */
 
-//  chrome.storage.local.clear(function() {});
+ chrome.storage.local.clear(function() {});
 
 
 App = {
