@@ -121,6 +121,10 @@ let DOM = (function() {
         return all_movies;
     }
 
+    function renderTextMarker(text) {
+        return `<span class="text-marker">${text}</span>`;
+    }
+
     /* =================== public methods ================== */
     function render(type, data) {
         let renderedData = '';
@@ -144,6 +148,10 @@ let DOM = (function() {
 
             case MOVIES:
                 renderedData = renderMovies(data);
+                break;
+
+            case TEXT_MARKER:
+                renderedData = renderTextMarker(data);
                 break;
         }
 

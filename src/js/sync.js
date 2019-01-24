@@ -7,7 +7,7 @@ Sync = {
     activate: async function() {
         let storage = await Storage.get();
 
-        if ((storage.synced - Date.now()) / 1000/60/60 > 2) {  // sync every 2+ hours
+        if ((Date.now() - storage.synced) / 1000/60/60 > 2) {  // sync every 2+ hours
             // Prepare sync ids
             if (storage.sync_ids.length == 0) {
                 storage.shows.forEach((show) => {

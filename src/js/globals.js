@@ -3,6 +3,7 @@ const MOVIES = 'movies';
 const IMDB_ADD_BUTTON = 'imdbAddButton';
 const TODAY_SHOWS = 'todayShows';
 const SEVEN_DAYS_SHOWS = 'nextSevenDaysShows';
+const TEXT_MARKER = 'textMarker';
 const SYNC_TIME = 10000;
 const REQUEST_LIMIT = 40;
 
@@ -35,6 +36,10 @@ function getActiveTab() {
     });
 
     return active_tab;
+}
+
+function isContainSpecialChar(str){
+    return /[~`!#$%\^&*+=\-\[\]\\';.,/{}|\\":<>\?]/g.test(str);
 }
 
 function message(text) {

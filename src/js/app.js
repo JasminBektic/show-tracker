@@ -11,7 +11,6 @@
 
 //  chrome.storage.local.clear(function() {});
 
-
 App = {
     init: function() {
         App.setView();
@@ -25,17 +24,32 @@ App = {
     searchFilter: async function(event) {
         let storage = await Storage.get();
         let active_tab = getActiveTab();
+        let search_term = event.target.value.trim();
+        let regex = new RegExp(search_term, 'gi');
+
+        if (isContainSpecialChar(search_term)) {
+            App.setView(active_tab, []);
+            return;
+        }
 
         if (active_tab == SHOWS) {
             let filtered_shows = storage.shows.filter((show) => {
-                return show.name.toLowerCase().includes(event.target.value.toLowerCase());
+                if (match_text = show.name.match(regex)) {
+                    let search_term_marker = DOM.render(TEXT_MARKER, match_text.shift());
+                    show.name = show.name.replace(regex, search_term_marker);
+                    return true;
+                }
             });
             App.setView(SHOWS, filtered_shows);
         }
 
         if (active_tab == MOVIES) {
             let filtered_movies = storage.movies.filter((movie) => {
-                return movie.name.toLowerCase().includes(event.target.value.toLowerCase());
+                if (match_text = movie.name.match(regex)) {
+                    let search_term_marker = DOM.render(TEXT_MARKER, match_text.shift());
+                    movie.name = movie.name.replace(regex, search_term_marker);
+                    return true;
+                }
             });
             App.setView(MOVIES, filtered_movies);
         }
