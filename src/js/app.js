@@ -91,8 +91,10 @@ App = {
         let storage = await Storage.get();
         let view_render = document.getElementById('view-render');
         let search_filter = document.getElementById('search-filter');
+        let delete_all = document.getElementById('delete-all');
 
-        search_filter.style.display = 'none';
+        search_filter.style.display = 'block';
+        delete_all.style.display = 'block';
 
         switch(view) {
             case SHOWS:
@@ -100,7 +102,6 @@ App = {
                 document.querySelectorAll('[data-show-delete]').forEach((e) => {
                     e.addEventListener('click', App.deleteShow);
                 });
-                search_filter.style.display = 'block';
                 break;
 
             case MOVIES:
@@ -108,12 +109,13 @@ App = {
                 document.querySelectorAll('[data-movie-delete]').forEach((e) => {
                     e.addEventListener('click', App.deleteMovie);
                 });
-                search_filter.style.display = 'block';
                 break;
 
             default:
                 view_render.innerHTML = DOM.render(TODAY_SHOWS, storage.shows);
                 view_render.innerHTML += DOM.render(SEVEN_DAYS_SHOWS, storage.shows);
+                search_filter.style.display = 'none';
+                delete_all.style.display = 'none';
         }
     }
 }

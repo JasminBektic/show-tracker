@@ -9,10 +9,10 @@ Imdb = {
     bindAddClickEvent: async function() {
         var imdb_id = window.location.pathname.split('/')[2];
         
-        if (added_show = await Imdb.findAddedShow(imdb_id)) {
-            message(`You already added ${added_show.name}.`);
-            return;
-        }
+        // if (added_show = await Imdb.findAddedShow(imdb_id)) {
+        //     message(`You already added ${added_show.name}.`);
+        //     return;
+        // }
     
         Api.getByImdb(imdb_id)
             .then((response) => {
@@ -22,6 +22,8 @@ Imdb = {
                 return Api.getById(response.data.id);
             })
             .then((show) => {
+                console.log(show);
+                
                 show.imdb_id = imdb_id;
                 
                 Storage.insert(Storage.getKey() == SHOWS ? 

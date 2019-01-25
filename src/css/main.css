@@ -1,3 +1,6 @@
+/*
+* Scrollbar
+*/
 ::-webkit-scrollbar-track {
 	background-color: black;
 }
@@ -16,6 +19,9 @@
 	width: 5px;
 }
 
+/*
+* Scrollbar
+*/
 body {
     width: 300px;
     background-color: rgb(243, 242, 242);

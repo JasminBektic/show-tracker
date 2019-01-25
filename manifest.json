@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
-    "name": "Extension Example",
-    "description": "Basic extension.",
+    "name": "ShowTracker",
+    "description": "Track your movies and TV shows.",
     "version": "0.1",
     "author": "Jasmin Bektic",       
     "browser_action": {
@@ -11,7 +11,7 @@
             "32": "icon.png"            
         },
         "default_title": "Show Tracker",
-        "default_popup": "src/html/popup.html"
+        "default_popup": "src/html/index.html"
     },
     "background": {
         "scripts": [
