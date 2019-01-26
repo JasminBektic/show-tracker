@@ -21,16 +21,16 @@ function dateFormat(date) {
 
 function setActiveTab(tab) {
     document.querySelectorAll('[data-tab]').forEach((e) => {
-        e.classList.remove('active');
+        e.classList.remove('tab-active');
     });
-    tab.classList.add('active');
+    tab.classList.add('tab-active');
 }
 
 function getActiveTab() {
     let active_tab = '';
 
     document.querySelectorAll('[data-tab]').forEach((e) => {
-        if(e.className.includes('active')) {
+        if(e.className.includes('tab-active')) {
             active_tab = e.getAttribute('data-tab');
         }
     });

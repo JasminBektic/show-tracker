@@ -27,6 +27,23 @@ body {
     background-color: rgb(243, 242, 242);
 }
 
+.navigation ul {
+	list-style: none;
+    padding: 5px 0;
+    display: flex;
+    justify-content: space-evenly;
+    border: 1px solid black;
+    margin: 0;
+}
+
+.navigation ul li {
+	cursor: pointer;
+}
+
+.tab-active {
+
+}
+
 .text-marker {
 	background: red;
 }

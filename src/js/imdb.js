@@ -3,7 +3,8 @@ Imdb = {
         let add_button = DOM.render(IMDB_ADD_BUTTON);
         add_button.firstChild.addEventListener('click', Imdb.bindAddClickEvent);
     
-        document.getElementById('wrapper').appendChild(add_button);
+        // document.getElementById('wrapper').appendChild(add_button);
+        document.querySelector('div#title-overview-widget div.wlb-title-main-details').appendChild(add_button);
     },
 
     bindAddClickEvent: async function() {

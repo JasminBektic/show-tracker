@@ -7,7 +7,7 @@ let DOM = (function() {
     function renderImdbAddButton() {
         let button_wrapper = document.createElement('div');
         button_wrapper.setAttribute('class', 'imdb-container'); 
-        button_wrapper.innerHTML = `<button class="test-class">Add</button>`;
+        button_wrapper.innerHTML = `<button class="test-class">+ Add to ShowTracker</button>`;
 
         return button_wrapper;
     }
@@ -41,12 +41,12 @@ let DOM = (function() {
             var showDate = new Date(show.next_episode_to_air ? show.next_episode_to_air.air_date : 0);
     
             if (Math.abs(currentDate - showDate) / (1000*60*60) < 7*24) {
-                nextSevenDaysShows += `<div class='d-flex pb-2'>
+                nextSevenDaysShows += `<div class=''>
                                             <img src='${config.api.base_url}w45/${show.poster_path}'>
-                                            <span class='pl-1'>
+                                            <span class=''>
                                                 <h6>${show.name}</h6>
-                                                <div class='small'>Rating: ${show.vote_average} </div>
-                                                <div class='small'>Next episode: ${(show.next_episode_to_air ? dateFormat(show.next_episode_to_air.air_date) : '')} </div>
+                                                <div class=''>Rating: ${show.vote_average} </div>
+                                                <div class=''>Next episode: ${(show.next_episode_to_air ? dateFormat(show.next_episode_to_air.air_date) : '')} </div>
                                             </span>
                                         </div>`;
             }
