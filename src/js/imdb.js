@@ -3,20 +3,23 @@ Imdb = {
         let add_button = DOM.render(IMDB_ADD_BUTTON);
         let messages = DOM.render(IMDB_MESSAGES);
 
-        add_button.firstChild.addEventListener('click', Imdb.bindAddClickEvent);
+        add_button.querySelector('button').addEventListener('click', Imdb.bindAddClickEvent);
     
         document.querySelector('div#title-overview-widget div.wlb-title-main-details').appendChild(add_button);
         document.getElementById('wrapper').appendChild(messages);
     },
 
     bindAddClickEvent: async function() {
-        var imdb_id = window.location.pathname.split('/')[2];
+        let imdb_id = window.location.pathname.split('/')[2];
+        let btn_loader = document.getElementById('imdb-button-loader');
         
         if (added_show = await Imdb.findAddedShow(imdb_id)) {
-            Imdb.showMessage(`${added_show.name} is already added.`, ERROR);
+            Imdb.showMessage(`"${added_show.name}" is already added.`, ERROR);
             return;
         }
-    
+
+        btn_loader.classList.add('imdb-button-loader--active');
+
         Api.getByImdb(imdb_id)
             .then((response) => {
                 response = Api.imdbResponsePurifier(response);
@@ -32,10 +35,12 @@ Imdb = {
                         :
                     Storage.prepareMovieStructure(show));
                 
-                Imdb.showMessage(`${show.name} successfully added.`, SUCCESS);
+                Imdb.showMessage(`"${show.name}" is successfully added.`, SUCCESS);
+                btn_loader.classList.remove('imdb-button-loader--active');
             })
             .catch(() => {
                 Imdb.showMessage('An error occurred, try again.');
+                btn_loader.classList.remove('imdb-button-loader--active');
             });
     },
 

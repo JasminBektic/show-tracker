@@ -7,7 +7,10 @@ let DOM = (function() {
     function renderImdbAddButton() {
         let button_wrapper = document.createElement('div');
         button_wrapper.setAttribute('class', 'imdb-container'); 
-        button_wrapper.innerHTML = `<button>+ Add to ShowTracker</button>`;
+        button_wrapper.innerHTML = `<div id="imdb-button-loader" class="imdb-button-loader">
+                                        <div class="imdb-button-loader-icon"></div>
+                                    </div>
+                                    <button>+ Add to ShowTracker</button>`;
 
         return button_wrapper;
     }
