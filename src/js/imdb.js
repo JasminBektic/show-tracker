@@ -1,19 +1,21 @@
 Imdb = {
     init: function() {
         let add_button = DOM.render(IMDB_ADD_BUTTON);
+        let messages = DOM.render(IMDB_MESSAGES);
+
         add_button.firstChild.addEventListener('click', Imdb.bindAddClickEvent);
     
-        // document.getElementById('wrapper').appendChild(add_button);
         document.querySelector('div#title-overview-widget div.wlb-title-main-details').appendChild(add_button);
+        document.getElementById('wrapper').appendChild(messages);
     },
 
     bindAddClickEvent: async function() {
         var imdb_id = window.location.pathname.split('/')[2];
         
-        // if (added_show = await Imdb.findAddedShow(imdb_id)) {
-        //     message(`You already added ${added_show.name}.`);
-        //     return;
-        // }
+        if (added_show = await Imdb.findAddedShow(imdb_id)) {
+            Imdb.showMessage(`${added_show.name} is already added.`, ERROR);
+            return;
+        }
     
         Api.getByImdb(imdb_id)
             .then((response) => {
@@ -23,8 +25,6 @@ Imdb = {
                 return Api.getById(response.data.id);
             })
             .then((show) => {
-                console.log(show);
-                
                 show.imdb_id = imdb_id;
                 
                 Storage.insert(Storage.getKey() == SHOWS ? 
@@ -32,10 +32,10 @@ Imdb = {
                         :
                     Storage.prepareMovieStructure(show));
                 
-                message((Storage.getKey() == SHOWS ? 'TV show' : 'Movie') + ' successfully added.');
+                Imdb.showMessage(`${show.name} successfully added.`, SUCCESS);
             })
             .catch(() => {
-                message('An error occurred, try again.');
+                Imdb.showMessage('An error occurred, try again.');
             });
     },
 
@@ -48,6 +48,36 @@ Imdb = {
         });
         
         return founded;
+    },
+
+    showMessage: function(text, type) {
+        let message_box = document.getElementById('imdb-message');
+
+        if (message_box.innerHTML != '') return;
+
+        message_box.classList.remove('imdb-message-success', 
+                                     'imdb-message-warning', 
+                                     'imdb-message-error');
+        switch(type) {
+            case SUCCESS:
+                message_box.classList.add('imdb-message-success');
+                break;
+
+            case ERROR:
+                message_box.classList.add('imdb-message-warning');
+                break;
+
+            default:
+                message_box.classList.add('imdb-message-error');
+        }
+        message_box.innerHTML = text;
+
+        setTimeout(() => {
+            message_box.innerHTML = '';
+            message_box.classList.remove('imdb-message-success', 
+                                         'imdb-message-warning', 
+                                         'imdb-message-error');
+        }, 2500);
     }
 }
 

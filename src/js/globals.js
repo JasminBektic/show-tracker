@@ -1,11 +1,14 @@
 const SHOWS = 'shows';
 const MOVIES = 'movies';
 const IMDB_ADD_BUTTON = 'imdbAddButton';
+const IMDB_MESSAGES = 'imdbMessages';
 const TODAY_SHOWS = 'todayShows';
 const SEVEN_DAYS_SHOWS = 'nextSevenDaysShows';
 const TEXT_MARKER = 'textMarker';
 const SYNC_TIME = 10000;
 const REQUEST_LIMIT = 40;
+const SUCCESS = 1;
+const ERROR = 0;
 
 
 function dateFormat(date) {
@@ -40,8 +43,4 @@ function getActiveTab() {
 
 function isContainSpecialChar(str){
     return /[~`!#$%\^&*+=\-\[\]\\';.,/{}|\\":<>\?]/g.test(str);
-}
-
-function message(text) {
-    alert(text);
 }

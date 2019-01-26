@@ -1,6 +1,7 @@
+/*
+* Button
+*/
 .imdb-container {
-    display: inline-block;
-    position: relative;
     float: left;
     margin-top: -5px;
     padding-left: 20px;
@@ -13,4 +14,39 @@
     border: none;
     outline: none;
     color: #1b1b1b;
+}
+
+/*
+* Messages
+*/
+.imdb-message-container {
+    position: fixed;
+    top: 5px;
+    right: 5px;
+    z-index: 9999;
+}
+
+.imdb-message {
+    padding: 7px 10px;
+    font-family: Arial;
+    color: #fff;
+    font-size: 15px;
+    border-radius: 2px;
+    transition: 150ms linear;
+    opacity: 0;
+}
+
+.imdb-message-success {
+    background-color: #28a745;
+    opacity: 1;
+}
+
+.imdb-message-warning {
+    background-color: #ffc107;
+    opacity: 1;
+}
+
+.imdb-message-error {
+    background-color: #dc3545;
+    opacity: 1;
 }

@@ -7,9 +7,17 @@ let DOM = (function() {
     function renderImdbAddButton() {
         let button_wrapper = document.createElement('div');
         button_wrapper.setAttribute('class', 'imdb-container'); 
-        button_wrapper.innerHTML = `<button class="test-class">+ Add to ShowTracker</button>`;
+        button_wrapper.innerHTML = `<button>+ Add to ShowTracker</button>`;
 
         return button_wrapper;
+    }
+
+    function renderImdbMessages() {
+        let messages_wrapper = document.createElement('div');
+        messages_wrapper.setAttribute('class', 'imdb-message-container');
+        messages_wrapper.innerHTML = `<div id="imdb-message" class="imdb-message"></div>`;
+
+        return messages_wrapper;
     }
 
     function renderTodayShows(shows) {
@@ -132,6 +140,10 @@ let DOM = (function() {
         switch(type) {
             case IMDB_ADD_BUTTON:
                 renderedData = renderImdbAddButton();
+                break;
+
+            case IMDB_MESSAGES:
+                renderedData = renderImdbMessages();
                 break;
 
             case TODAY_SHOWS:
