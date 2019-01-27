@@ -69,6 +69,31 @@ let DOM = (function() {
         return nextSevenDaysShows;
     }
 
+    function renderLastSevenDaysShows(shows) {
+        let lastSevenDaysShows = '',
+            currentDate = new Date();
+    
+        shows.forEach(show => {
+            let showDate = new Date(show.last_episode_to_air ? show.last_episode_to_air.air_date : 0);
+       
+            if (Math.abs(currentDate - showDate) / (1000*60*60) < 7*24) {
+                lastSevenDaysShows += `<div class=''>
+                                            <img src='${config.api.base_url}w45/${show.poster_path}'>
+                                            <span class=''>
+                                                <h6>${show.name}</h6>
+                                                <div class=''>Rating: ${show.vote_average} </div>
+                                                <div class=''>Next episode: ${(show.last_episode_to_air ? dateFormat(show.last_episode_to_air.air_date) : '')} </div>
+                                            </span>
+                                        </div>`;
+            }
+    
+        });
+    
+        lastSevenDaysShows = lastSevenDaysShows ? '<h4><u>Last week</u></h4>' + lastSevenDaysShows : '';
+    
+        return lastSevenDaysShows;
+    }
+
     function renderShows(shows) {
         var all_shows = '';
     
@@ -153,8 +178,12 @@ let DOM = (function() {
                 renderedData = renderTodayShows(data);
                 break;
 
-            case SEVEN_DAYS_SHOWS:
+            case NEXT_SEVEN_DAYS_SHOWS:
                 renderedData = renderNextSevenDaysShows(data);
+                break;
+
+            case LAST_SEVEN_DAYS_SHOWS:
+                renderedData = renderLastSevenDaysShows(data);
                 break;
 
             case SHOWS:

@@ -113,7 +113,8 @@ App = {
 
             default:
                 view_render.innerHTML = DOM.render(TODAY_SHOWS, storage.shows);
-                view_render.innerHTML += DOM.render(SEVEN_DAYS_SHOWS, storage.shows);
+                view_render.innerHTML += DOM.render(NEXT_SEVEN_DAYS_SHOWS, storage.shows);
+                view_render.innerHTML += DOM.render(LAST_SEVEN_DAYS_SHOWS, storage.shows);
                 search_filter.style.display = 'none';
                 delete_all.style.display = 'none';
         }
